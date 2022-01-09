@@ -10,15 +10,14 @@
 
 / {
 	model = "Huawei MediaPad T2 Pro 10";
-	compatible = "huawei,federer", "qcom,msm8939";, "qcom,msm8939-qrd-skuk", "qcom,qrd";
+	compatible = "huawei,federer", "qcom,msm8939", "qcom,msm8939-qrd-skuk", "qcom,qrd";
 	chassis-type = "tablet";
 	qcom,msm-id = <239 0>;
-	qcom,board-id =
-		<8000 0>, <8000 4>,
-		<8016 0>, <8016 4>,
-		<8032 0>, <8032 4>,
-		<8112 0>, <8112 4>,
-		<8128 0>, <8128 4>;
+	qcom,board-id =	<8000 0>, <8000 4>,
+                    <8016 0>, <8016 4>,
+                    <8032 0>, <8032 4>,
+                    <8112 0>, <8112 4>,
+                    <8128 0>, <8128 4>;
 
 	aliases {
 		serial0 = &blsp1_uart2;
