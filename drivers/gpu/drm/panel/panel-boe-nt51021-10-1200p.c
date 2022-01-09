@@ -554,8 +554,9 @@ static const struct panel_desc boe_nt51021_10_desc = {
 	.format = MIPI_DSI_FMT_RGB888,
 	.mode_flags = MIPI_DSI_MODE_VIDEO |
 			MIPI_DSI_MODE_VIDEO_BURST |
-			MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
-			MIPI_DSI_MODE_VIDEO_HSE,
+			//MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+			MIPI_DSI_MODE_VIDEO_HSE |
+            MIPI_DSI_MODE_LPM,
 			//MIPI_DSI_CLOCK_NON_CONTINUOUS | #pixels & stripes
 			//MIPI_DSI_MODE_LPM, # won't wake up from deep sleep <--Test
 	.init_cmds = boe_init_cmd,
@@ -612,7 +613,7 @@ static int boe_panel_add(struct boe_panel *boe)
 	if (IS_ERR(boe->pp1800))
 		return PTR_ERR(boe->pp1800);
 
-	boe->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
+	boe->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
 	if (IS_ERR(boe->reset_gpio)) {
 		dev_err(dev, "cannot get reset-gpios %ld\n",
 			PTR_ERR(boe->reset_gpio));

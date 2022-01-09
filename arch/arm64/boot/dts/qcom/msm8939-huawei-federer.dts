@@ -254,6 +254,34 @@
 &blsp_i2c4 {
 	status = "okay";
 
+	bq24296: charger@6B {
+		compatible = "ti,bq24296";
+		reg = <0x6B>;
+		
+		monitored-battery = <&bat>;
+		interrupt-parent = <&msmgpio>;
+		interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
+		
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&bq_irq_default>; // &bq_dc_irq_default>;
+		pinctrl-1 = <&bq_irq_sleep>;
+		
+		ti,bq2429x,usb-vlim = <4400>;
+		ti,bq2429x,usb-ilim = <500>;
+		ti,bq2429x,usb-ichg = <500>;
+		ti,bq2429x,usb-vreg = <4200>;
+
+		ti,bq2429x,ta-vlim = <4400>;
+		ti,bq2429x,ta-ilim = <2000>;
+		ti,bq2429x,ta-ichg = <2000>;
+		ti,bq2429x,ta-vreg = <4200>;		
+			
+		ti,bq2429x,precharge-current = <180>;
+		ti,bq2429x,termination-current = <180>;
+		ti,bq2429x,boost-volt = <5000>;
+		ti,bq2429x,enable_term;
+	};
+
 	ncp6335d: ncp6335d-regulator@1c {
 		compatible = "onnn,ncp6335d";
 		reg = <0x1c>;
@@ -345,6 +373,7 @@
 	status = "okay";
 
 	monitored-battery = <&bat>;
+	power-supplies = <&bq24296>;
 };
 
 &pm8916_resin {
@@ -596,6 +625,23 @@
 
 		drive-strength = <2>;
 		output-low;
+	};
+
+	bq {
+		bq_irq_default: bq-irq-default {
+			pins = "gpio62";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-up;
+		};
+		bq_irq_sleep: bq-irq-sleep {
+			pins = "gpio62";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-up;
+		};
 	};
 
 	ext_buck_vsel: ext-buck-vsel {
