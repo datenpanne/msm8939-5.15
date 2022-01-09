@@ -373,7 +373,7 @@
 	status = "okay";
 
 	monitored-battery = <&bat>;
-	power-supplies = <&bq24296>;
+//	power-supplies = <&bq24296>;
 };
 
 &pm8916_resin {
