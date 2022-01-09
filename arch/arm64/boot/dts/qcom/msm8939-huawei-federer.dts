@@ -598,6 +598,13 @@
 		output-low;
 	};
 
+	ext_buck_vsel: ext-buck-vsel {
+		pins = "gpio111";
+		function = "gpio";
+
+		drive-strength = <2>;
+	};
+
 	usb_id_default: usb-id-default {
 		pins = "gpio117";
 		function = "gpio";
