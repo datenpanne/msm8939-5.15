@@ -254,11 +254,11 @@
 &blsp_i2c4 {
 	status = "okay";
 
-	bq24296: charger@6B {
+	bq24296: battery@6B {
 		compatible = "ti,bq24296";
 		reg = <0x6B>;
 		
-		monitored-battery = <&bat>;
+		//monitored-battery = <&bat>;
 		interrupt-parent = <&msmgpio>;
 		interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
 		
@@ -334,6 +334,10 @@
 };
 
 &dsi0 {
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&mdss_default>;
+	pinctrl-1 = <&mdss_sleep>;
+
 	panel@0 {
 		status = "okay";
 		compatible = "boe,nt51021-10-1200p";
@@ -388,10 +392,6 @@
 
 &pronto {
 	status = "okay";
-
-	iris {
-		compatible = "qcom,wcn3680";
-	};
 };
 
 &sdhc_1 {
@@ -626,6 +626,23 @@
 
 		drive-strength = <2>;
 		output-low;
+	};
+
+	mdss {
+		mdss_default: mdss-default {
+			pins = "gpio25";
+			function = "gpio";
+
+			drive-strength = <8>;
+			bias-disable;
+		};
+		mdss_sleep: mdss-sleep {
+			pins = "gpio25";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-down;
+		};
 	};
 
 	bq {

@@ -560,7 +560,7 @@ static const struct panel_desc boe_nt51021_10_desc = {
 			//MIPI_DSI_CLOCK_NON_CONTINUOUS | #pixels & stripes
 			//MIPI_DSI_MODE_LPM, # won't wake up from deep sleep <--Test
 	.init_cmds = boe_init_cmd,
-	.discharge_on_disable = false,
+	.discharge_on_disable = true,
 };
 
 static int boe_panel_get_modes(struct drm_panel *panel,
