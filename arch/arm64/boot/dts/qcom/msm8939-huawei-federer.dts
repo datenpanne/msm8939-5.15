@@ -164,7 +164,7 @@
 		};
 	};
 
-	pp1800_lcd: pp1800-lcd {
+	/*pp1800_lcd: pp1800-lcd {
 		compatible = "regulator-fixed";
 		regulator-name = "pp1800_lcd";
 		pinctrl-names = "default";
@@ -173,7 +173,7 @@
 		enable-active-high;
 		regulator-always-on;
 		gpio = <&msmgpio 109 GPIO_ACTIVE_HIGH>;
-	};
+	};*/
 
 	reg_lcd_iovcc: iovcc {
 		compatible = "regulator-fixed";
@@ -181,7 +181,7 @@
 		vin-supply = <&reg_lcd_pos>;	
 		gpio = <&msmgpio 97 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
-		regulator-always-on;
+		//regulator-always-on;
 		regulator-boot-on;
 		pinctrl-names = "default";
 		pinctrl-0 = <&lcd_iovcc_default>;
@@ -193,7 +193,7 @@
 		vin-supply = <&reg_lcd_neg>;		
 		gpio = <&msmgpio 32 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
-		regulator-always-on;
+		//regulator-always-on;
 		regulator-boot-on;
 		pinctrl-names = "default";
 		pinctrl-0 = <&lcd_vcc_default>;
@@ -204,7 +204,7 @@
 		regulator-name = "lcd_pos";
 		regulator-min-microvolt = <5400000>;
 		regulator-max-microvolt = <5400000>;
-		regulator-always-on;
+		//regulator-always-on;
 		regulator-boot-on;
 	};
 
@@ -213,7 +213,7 @@
 		regulator-name = "lcd_neg";
 		regulator-min-microvolt = <5400000>;
 		regulator-max-microvolt = <5400000>;
-		regulator-always-on;
+		//regulator-always-on;
 		regulator-boot-on;
 	};
 
@@ -345,9 +345,10 @@
 
 		vcc-supply = <&reg_lcd_vcc>;
 		iovcc-supply = <&reg_lcd_iovcc>;
-		pp1800-supply = <&pp1800_lcd>;
+		//pp1800-supply = <&pp1800_lcd>;
 
 		reset-gpios = <&msmgpio 25 GPIO_ACTIVE_LOW>;
+		backlight-gpios = <&msmgpio 109 GPIO_ACTIVE_HIGH>;
 
 		port {
 			panel_in: endpoint {
@@ -604,13 +605,13 @@
 		bias-disable;
 	};
 
-	pp1800_lcd_en: pp1800-lcd-en {
+	/*pp1800_lcd_en: pp1800-lcd-en {
 		pins = "gpio109";
 		function = "gpio";
 
 		drive-strength = <2>;
 		output-low;
-	};
+	};*/
 
 	lcd_iovcc_default: lcd-iovcc-default {
 		pins = "gpio97";
