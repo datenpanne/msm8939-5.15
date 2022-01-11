@@ -254,7 +254,7 @@
 &blsp_i2c4 {
 	status = "okay";
 
-	bq24296: battery@6B {
+	/* charger: bq24296@6B { // fot ti reference driver
 		compatible = "ti,bq24296";
 		reg = <0x6B>;
 		
@@ -280,6 +280,39 @@
 		ti,bq2429x,termination-current = <180>;
 		ti,bq2429x,boost-volt = <5000>;
 		ti,bq2429x,enable_term;
+	};*/
+
+	charger: bq24296@6b {
+		compatible = "ti,bq24296";
+		reg = <0x6b>;
+
+		monitored-battery = <&bat>;
+		ti,chg_current = <1000 500 2000>; // chg_current (max for the battery), usb_input_current, adp_input_current
+
+        interrupt-parent = <&msmgpio>;
+		interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
+		dc-det = <108 GPIO_ACTIVE_LOW>;
+		
+		/*pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&bq_irq_default &bq_dc_default>;
+		pinctrl-1 = <&bq_irq_sleep>;*/
+
+		regulators {
+			vsys_reg: vsys_regulator {
+				regulator-compatible = "bq2429x-vsys";
+				regulator-name = "vsys";
+//				regulator-min-microvolt = <3500000>;
+//				regulator-max-microvolt = <4200000>;
+				regulator-always-on;
+				regulator-boot-on;
+			};
+			otg_reg: otg_regulator {
+				regulator-compatible = "bq2429x-otg";
+				regulator-name = "otg";
+//				regulator-min-microvolt = <4900000>;
+//				regulator-max-microvolt = <5100000>;
+			};
+		};
 	};
 
 	ncp6335d: ncp6335d-regulator@1c {
