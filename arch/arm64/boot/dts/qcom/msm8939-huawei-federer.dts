@@ -5,6 +5,7 @@
 #include "msm8939.dtsi"
 #include "pm8916.dtsi"
 #include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/sound/apq8016-lpass.h>
 
@@ -282,14 +283,14 @@
 		ti,bq2429x,enable_term;
 	};*/
 
-	charger: bq24296@6b {
+	/*charger: bq24296@6b { //charger gd
 		compatible = "ti,bq24296";
 		reg = <0x6b>;
 
 		monitored-battery = <&bat>;
 		ti,chg_current = <1000 500 2000>; // chg_current (max for the battery), usb_input_current, adp_input_current
 
-        interrupt-parent = <&msmgpio>;
+		interrupt-parent = <&msmgpio>;
 		interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
 		dc-det = <108 GPIO_ACTIVE_LOW>;
 		
@@ -313,6 +314,21 @@
 //				regulator-max-microvolt = <5100000>;
 			};
 		};
+	};*/
+
+	bq24296: charger@6b {
+		compatible = "ti,bq24296";
+		reg = <0x6b>;
+
+		interrupt-parent = <&msmgpio>;
+		interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&charger_irq_default &chg_ctl_default>; // &otg_en>;
+		ti,system-minimum-microvolt = <3200000>;
+		monitored-battery = <&bat>;
+		omit-battery-class;
+
+		usb_otg_vbus: usb-otg-vbus { };
 	};
 
 	ncp6335d: ncp6335d-regulator@1c {
@@ -412,7 +428,7 @@
 	status = "okay";
 
 	monitored-battery = <&bat>;
-//	power-supplies = <&bq24296>;
+	power-supplies = <&bq24296>;
 };
 
 &pm8916_resin {
@@ -488,11 +504,11 @@
 
 &usb {
 	status = "okay";
-	extcon = <&usb_id>, <&usb_id>;
+	extcon = <&bq24296>, <&usb_id>;
 };
 
 &usb_hs_phy {
-	extcon = <&usb_id>;
+	extcon = <&bq24296>;
 	v1p8-supply = <&pm8916_l7>;
 	v3p3-supply = <&pm8916_l13>;
 };
@@ -679,7 +695,24 @@
 		};
 	};
 
-	bq {
+    bq24296 {
+        charger_irq_default: charger-irq-default {
+			pins = "gpio62";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-up;
+	};
+        chg_ctl_default: chg-ctl-default {
+			pins = "gpio62";
+			function = "gpio";
+
+			drive-strength = <2>;
+            output-high;
+        };
+    };
+
+	/*bq {
 		bq_irq_default: bq-irq-default {
 			pins = "gpio62";
 			function = "gpio";
@@ -694,7 +727,7 @@
 			drive-strength = <2>;
 			bias-pull-up;
 		};
-	};
+	};*/
 
 	ext_buck_vsel: ext-buck-vsel {
 		pins = "gpio111";
@@ -710,4 +743,11 @@
 		drive-strength = <8>;
 		bias-pull-up;
 	};
+
+    dc_det: dc-det {
+        gpio-hog;
+        gpios = <108 GPIO_ACTIVE_HIGH>;
+        output-high;
+        line-name = "otg-gpio";
+    };
 };

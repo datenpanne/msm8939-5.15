@@ -21,6 +21,7 @@
 #define	BQ24190_MANUFACTURER	"Texas Instruments"
 
 #define BQ24190_REG_ISC		0x00 /* Input Source Control */
+
 #define BQ24190_REG_ISC_EN_HIZ_MASK		BIT(7)
 #define BQ24190_REG_ISC_EN_HIZ_SHIFT		7
 #define BQ24190_REG_ISC_VINDPM_MASK		(BIT(6) | BIT(5) | BIT(4) | \
@@ -89,8 +90,8 @@
 #define BQ24190_REG_CTTC_JEITA_ISET_SHIFT	0
 
 #define BQ24190_REG_ICTRC	0x06 /* IR Comp/Thermal Regulation Control */
-#define BQ24190_REG_ICTRC_BAT_COMP_MASK		(BIT(7) | BIT(6) | BIT(5))
-#define BQ24190_REG_ICTRC_BAT_COMP_SHIFT	5
+#define BQ24190_REG_ICTRC_BAT_COMP_MASK		(BIT(7) | BIT(6) | BIT(5) | BIT(4))
+#define BQ24190_REG_ICTRC_BAT_COMP_SHIFT	4
 #define BQ24190_REG_ICTRC_VCLAMP_MASK		(BIT(4) | BIT(3) | BIT(2))
 #define BQ24190_REG_ICTRC_VCLAMP_SHIFT		2
 #define BQ24190_REG_ICTRC_TREG_MASK		(BIT(1) | BIT(0))
@@ -135,11 +136,12 @@
 #define BQ24190_REG_F_NTC_FAULT_SHIFT		0
 
 #define BQ24190_REG_VPRS	0x0A /* Vendor/Part/Revision Status */
-#define BQ24190_REG_VPRS_PN_MASK		(BIT(5) | BIT(4) | BIT(3))
-#define BQ24190_REG_VPRS_PN_SHIFT		3
-#define BQ24190_REG_VPRS_PN_24190			0x4
-#define BQ24190_REG_VPRS_PN_24192			0x5 /* Also 24193, 24196 */
-#define BQ24190_REG_VPRS_PN_24192I			0x3
+#define BQ24190_REG_VPRS_PN_MASK		(BIT(7) | BIT(6) | BIT(5))
+#define BQ24190_REG_VPRS_PN_SHIFT		5
+//#define BQ24190_REG_VPRS_PN_24192			0x5    /* Also 24193 */
+#define BQ24190_REG_VPRS_PN_24295			0x6
+#define BQ24190_REG_VPRS_PN_24296			0x1
+#define BQ24190_REG_VPRS_PN_24297			0x3
 #define BQ24190_REG_VPRS_TS_PROFILE_MASK	BIT(2)
 #define BQ24190_REG_VPRS_TS_PROFILE_SHIFT	2
 #define BQ24190_REG_VPRS_DEV_REG_MASK		(BIT(1) | BIT(0))
@@ -186,7 +188,7 @@ static const unsigned int bq24190_usb_extcon_cable[] = {
 
 /* REG00[2:0] (IINLIM) in uAh */
 static const int bq24190_isc_iinlim_values[] = {
-	 100000,  150000,  500000,  900000, 1200000, 1500000, 2000000, 3000000
+	 100000,  150000,  500000,  900000, 1000000, 1500000, 2000000, 3000000
 };
 
 /* REG02[7:2] (ICHG) in uAh */
@@ -1647,9 +1649,9 @@ static int bq24190_hw_init(struct bq24190_dev_info *bdi)
 		return ret;
 
 	switch (v) {
-	case BQ24190_REG_VPRS_PN_24190:
-	case BQ24190_REG_VPRS_PN_24192:
-	case BQ24190_REG_VPRS_PN_24192I:
+	case BQ24190_REG_VPRS_PN_24295:
+	case BQ24190_REG_VPRS_PN_24296:
+	case BQ24190_REG_VPRS_PN_24297:
 		break;
 	default:
 		dev_err(bdi->dev, "Error unknown model: 0x%02x\n", v);
@@ -1954,6 +1956,9 @@ static const struct i2c_device_id bq24190_i2c_ids[] = {
 	{ "bq24192" },
 	{ "bq24192i" },
 	{ "bq24196" },
+	{ "bq24295" },
+	{ "bq24296" },
+	{ "bq24297" },
 	{ },
 };
 MODULE_DEVICE_TABLE(i2c, bq24190_i2c_ids);
@@ -1963,6 +1968,9 @@ static const struct of_device_id bq24190_of_match[] = {
 	{ .compatible = "ti,bq24192", },
 	{ .compatible = "ti,bq24192i", },
 	{ .compatible = "ti,bq24196", },
+	{ .compatible = "ti,bq24295", },
+	{ .compatible = "ti,bq24296", },
+	{ .compatible = "ti,bq24297", },
 	{ },
 };
 MODULE_DEVICE_TABLE(of, bq24190_of_match);
