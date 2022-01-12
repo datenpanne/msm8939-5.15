@@ -292,13 +292,13 @@
 
 		interrupt-parent = <&msmgpio>;
 		interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
-		dc-det = <108 GPIO_ACTIVE_LOW>;
+		dc-det = <108 GPIO_ACTIVE_LOW>;*/
 		
 		/*pinctrl-names = "default", "sleep";
 		pinctrl-0 = <&bq_irq_default &bq_dc_default>;
 		pinctrl-1 = <&bq_irq_sleep>;*/
 
-		regulators {
+	/*	regulators {
 			vsys_reg: vsys_regulator {
 				regulator-compatible = "bq2429x-vsys";
 				regulator-name = "vsys";
