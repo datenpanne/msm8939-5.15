@@ -107,6 +107,9 @@
 
 	bat: battery {
 		compatible = "simple-battery";
+        precharge-current-microamp = <13000000>;
+        charge-term-current-microamp = <6500000>;
+
 		voltage-min-design-microvolt = <3400000>;
 		voltage-max-design-microvolt = <4350000>;
 		energy-full-design-microwatt-hours = <24700000>;
