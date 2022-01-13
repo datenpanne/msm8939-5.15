@@ -107,13 +107,13 @@
 
 	bat: battery {
 		compatible = "simple-battery";
-        precharge-current-microamp = <13000000>;
-        charge-term-current-microamp = <6500000>;
-
 		voltage-min-design-microvolt = <3400000>;
 		voltage-max-design-microvolt = <4350000>;
 		energy-full-design-microwatt-hours = <24700000>;
 		charge-full-design-microamp-hours = <6500000>;
+
+        precharge-current-microamp = <1300000>;
+        charge-term-current-microamp = <650000>;
 
 		ocv-capacity-celsius = <25>;
 		ocv-capacity-table-0 = <4314000 100>, <4252000 95>, <4197000 90>,
@@ -445,6 +445,10 @@
 
 &pronto {
 	status = "okay";
+
+	iris {
+		compatible = "qcom,wcn3660b";
+	};
 };
 
 &sdhc_1 {
@@ -747,7 +751,7 @@
 		bias-pull-up;
 	};
 
-    dc_det: dc-det {
+    otg {
         gpio-hog;
         gpios = <108 GPIO_ACTIVE_HIGH>;
         output-high;
