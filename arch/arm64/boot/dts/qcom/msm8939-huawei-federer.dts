@@ -513,7 +513,7 @@
 &sound {
 	status = "okay";
 
-	model = "wt88047
+	model = "wt88047";
 	audio-routing =
 		"Speaker Amp INL", "HPH_L_EXT",
 		"Speaker Amp INR", "HPH_R_EXT",
