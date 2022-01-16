@@ -246,6 +246,16 @@
 
 	};
 
+	headphones_switch: audio-switch {
+		compatible = "simple-audio-amplifier";
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&headphones_switch_default>;
+
+		enable-gpios = <&msmgpio 0 GPIO_ACTIVE_HIGH>;
+		sound-name-prefix = "Headphones Switch";
+	};
+
 	usb_id: usb-id {
 		compatible = "linux,extcon-usb-gpio";
 		id-gpio = <&msmgpio 117 GPIO_ACTIVE_HIGH>;
@@ -503,39 +513,16 @@
 &sound {
 	status = "okay";
 
-	pinctrl-names = "default", "sleep";
-	pinctrl-0 = <&cdc_pdm_lines_act>;
-	pinctrl-1 = <&cdc_pdm_lines_sus>;
-
-	model = "oppo-a51f"
+	model = "wt88047
 	audio-routing =
 		"Speaker Amp INL", "HPH_L_EXT",
 		"Speaker Amp INR", "HPH_R_EXT",
+		"Headphones Switch INL", "HPH_L",
+		"Headphones Switch INR", "HPH_R",
 		"AMIC1", "MIC BIAS External1",
 		"AMIC2", "MIC BIAS External2",
 		"AMIC3", "MIC BIAS External1";
-
-    aux-devs = <&speaker_amp>;
-
-	dai-link-primary {
-		link-name = "Primary MI2S";
-		cpu {
-			sound-dai = <&lpass MI2S_PRIMARY>;
-		};
-		codec {
-			sound-dai = <&lpass_codec 0>, <&wcd_codec 0>;
-		};
-	};
-
-	dai-link-tertiary {
-		link-name = "Tertiary MI2S";
-		cpu {
-			sound-dai = <&lpass MI2S_TERTIARY>;
-		};
-		codec {
-			sound-dai = <&lpass_codec 1>, <&wcd_codec 1>;
-		};
-	};
+	aux-devs = <&speaker_amp>, <&headphones_switch>;
 };
 
 &usb {
@@ -709,6 +696,14 @@
 
 	gpio_leds_default: gpio-leds-default {
 		pins = "gpio8", "gpio9", "gpio10";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	headphones_switch_default: headphones-switch-default {
+		pins = "gpio0";
 		function = "gpio";
 
 		drive-strength = <2>;
