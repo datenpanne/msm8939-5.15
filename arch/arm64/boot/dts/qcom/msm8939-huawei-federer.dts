@@ -239,7 +239,7 @@
 		enable-gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
 		sound-name-prefix = "Speaker Amp";
 
-		gpios = <&msmgpio 1 GPIO_ACTIVE_HIGH>;
+		gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		pinctrl-names = "default";
 		pinctrl-0 = <&speaker_amp_default>;
@@ -513,6 +513,11 @@
 &sound {
 	status = "okay";
 
+	pinctrl-names = "default", "sleep";
+
+	pinctrl-0 = <&cdc_pdm_lines_act>;
+	pinctrl-1 = <&cdc_pdm_lines_sus>;
+
 	model = "wt88047";
 	audio-routing =
 		"Speaker Amp INL", "HPH_L_EXT",
@@ -523,6 +528,26 @@
 		"AMIC2", "MIC BIAS External2",
 		"AMIC3", "MIC BIAS External1";
 	aux-devs = <&speaker_amp>, <&headphones_switch>;
+
+	dai-link-primary {
+		link-name = "Primary MI2S";
+		cpu {
+			sound-dai = <&lpass MI2S_PRIMARY>;
+		};
+		codec {
+			sound-dai = <&lpass_codec 0>, <&wcd_codec 0>;
+		};
+	};
+
+	dai-link-tertiary {
+		link-name = "Tertiary MI2S";
+		cpu {
+			sound-dai = <&lpass MI2S_TERTIARY>;
+		};
+		codec {
+			sound-dai = <&lpass_codec 1>, <&wcd_codec 1>;
+		};
+	};
 };
 
 &usb {
