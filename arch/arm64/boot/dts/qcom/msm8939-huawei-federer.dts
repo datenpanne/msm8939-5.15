@@ -30,8 +30,8 @@
 
 	reserved-memory {
 		/delete-node/ venus@90000000;
-		/delete-node/ rmtfs@86681000;
-		/delete-node/ rfsa@867e0000;
+		/*/delete-node/ rmtfs@86681000;
+		/delete-node/ rfsa@867e0000;*/
 		/delete-node/ mba@8ea00000;
 
 		cont_splash_mem: framebuffer@83000000 {
@@ -45,12 +45,12 @@
 			no-map;
 		};
 
-		rmtfs@86700000 {
+		/*rmtfs@86700000 {
 			compatible = "qcom,rmtfs-mem";
 			reg = <0x0 0x86700000 0x0 0x100000>;
 			no-map;
 			qcom,client-id = <1>;
-		};
+		};*/
 
 		gps_mem: gps@8c400000 {
 			status = "disabled";
@@ -88,23 +88,6 @@
 		};
 	};
 
-	gpio-hall-sensor {
-		compatible = "gpio-keys";
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&gpio_hall_sensor_default>;
-
-		label = "GPIO Hall Effect Sensor";
-
-		hall-sensor {
-			label = "Hall Effect Sensor";
-			gpios = <&msmgpio 69 GPIO_ACTIVE_LOW>;
-			linux,input-type = <EV_SW>;
-			linux,code = <SW_LID>;
-			linux,can-disable;
-		};
-	};
-
 	bat: battery {
 		compatible = "simple-battery";
 		voltage-min-design-microvolt = <3400000>;
@@ -124,6 +107,23 @@
 					<3671000 11>, <3668000 10>, <3664000 9>, <3659000 8>,
 					<3649000 7>, <3627000 6>, <3588000 5>, <3535000 4>,
 					<3469000 3>, <3381000 2>, <3252000 1>, <3000000 0>;
+	};
+
+	gpio-hall-sensor {
+		compatible = "gpio-keys";
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&gpio_hall_sensor_default>;
+
+		label = "GPIO Hall Effect Sensor";
+
+		hall-sensor {
+			label = "Hall Effect Sensor";
+			gpios = <&msmgpio 69 GPIO_ACTIVE_LOW>;
+			linux,input-type = <EV_SW>;
+			linux,code = <SW_LID>;
+			linux,can-disable;
+		};
 	};
 
 	gpio-keys {
@@ -219,6 +219,31 @@
 		regulator-max-microvolt = <5400000>;
 		//regulator-always-on;
 		regulator-boot-on;
+	};
+
+	reg_speaker_boost: regulator-speaker-boost {
+		compatible = "regulator-fixed";
+		regulator-name = "ext-pa-boost";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+
+		gpios = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&speaker_boost_default>;
+	};
+
+	speaker_amp: audio-amplifier {
+		compatible = "simple-audio-amplifier";
+        VCC-supply = <&reg_speaker_boost>;
+		enable-gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
+		sound-name-prefix = "Speaker Amp";
+
+		gpios = <&msmgpio 120 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&speaker_amp_default>;
+
 	};
 
 	usb_id: usb-id {
@@ -482,11 +507,15 @@
 	pinctrl-0 = <&cdc_pdm_lines_act>;
 	pinctrl-1 = <&cdc_pdm_lines_sus>;
 
-	model = "msm8916";
+	model = "oppo-a51f"
 	audio-routing =
+		"Speaker Amp INL", "HPH_L_EXT",
+		"Speaker Amp INR", "HPH_R_EXT",
 		"AMIC1", "MIC BIAS External1",
 		"AMIC2", "MIC BIAS External2",
 		"AMIC3", "MIC BIAS External1";
+
+    aux-devs = <&speaker_amp>;
 
 	dai-link-primary {
 		link-name = "Primary MI2S";
@@ -512,6 +541,7 @@
 &usb {
 	status = "okay";
 	extcon = <&bq24296>, <&usb_id>;
+	vbus-supply = <&usb_otg_vbus>;
 };
 
 &usb_hs_phy {
@@ -645,6 +675,30 @@
 		bias-disable;
 	};
 
+    bq24296 {
+        charger_irq_default: charger-irq-default {
+			pins = "gpio62";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-up;
+	};
+        chg_ctl_default: chg-ctl-default {
+			pins = "gpio62";
+			function = "gpio";
+
+			drive-strength = <2>;
+            output-high;
+        };
+    };
+
+	ext_buck_vsel: ext-buck-vsel {
+		pins = "gpio111";
+		function = "gpio";
+
+		drive-strength = <2>;
+	};
+
 	gpio_hall_sensor_default: gpio-hall-sensor-default {
 		pins = "gpio69";
 		function = "gpio";
@@ -702,23 +756,6 @@
 		};
 	};
 
-    bq24296 {
-        charger_irq_default: charger-irq-default {
-			pins = "gpio62";
-			function = "gpio";
-
-			drive-strength = <2>;
-			bias-pull-up;
-	};
-        chg_ctl_default: chg-ctl-default {
-			pins = "gpio62";
-			function = "gpio";
-
-			drive-strength = <2>;
-            output-high;
-        };
-    };
-
 	/*bq {
 		bq_irq_default: bq-irq-default {
 			pins = "gpio62";
@@ -736,12 +773,22 @@
 		};
 	};*/
 
-	ext_buck_vsel: ext-buck-vsel {
-		pins = "gpio111";
+	speaker_amp_default: speaker-amp-default {
+		pins = "gpio3";
 		function = "gpio";
 
 		drive-strength = <2>;
+		bias-disable;
 	};
+
+	speaker_boost_default: speaker-boost-default {
+		pins = "gpio2";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
 
 	usb_id_default: usb-id-default {
 		pins = "gpio117";
