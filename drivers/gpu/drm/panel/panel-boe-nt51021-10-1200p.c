@@ -472,12 +472,10 @@ static int boe_panel_unprepare(struct drm_panel *panel)
 	return 0;
 }
 
-static int boe_panel_prepare(struct drm_panel *panel,
-                    struct boe_panel *boe)
+static int boe_panel_prepare(struct drm_panel *panel)
 {
-	struct mipi_dsi_device *dsi = boe->dsi;
 	struct boe_panel *boe = to_boe_panel(panel);
-	struct device *dev = &dsi->dev;
+	struct mipi_dsi_device *dsi = boe->dsi;
 	int ret;
 
 	if (boe->prepared)
@@ -511,12 +509,12 @@ static int boe_panel_prepare(struct drm_panel *panel,
 		goto poweroff;
 	}
 
-	ret = mipi_dsi_dcs_set_display_brightness(dsi, 0x00ff);
+	/*ret = mipi_dsi_dcs_set_display_brightness(dsi, 0x00ff);
 	if (ret < 0) {
-		dev_err(dev, "Failed to set display brightness: %d\n", ret);
+		dev_err(panel->dev "Failed to set display brightness: %d\n", ret);
 		return ret;
 	}
-	usleep_range(5000, 6000);
+	usleep_range(5000, 6000);*/
 
 	boe->prepared = true;
 
