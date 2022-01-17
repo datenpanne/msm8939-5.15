@@ -239,6 +239,8 @@
 		enable-gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
 		sound-name-prefix = "Speaker Amp";
 
+		gpio = <&msmgpio 1 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
 		pinctrl-names = "default";
 		pinctrl-0 = <&speaker_amp_default>;
 	};
@@ -790,7 +792,7 @@
 	};*/
 
 	speaker_amp_default: speaker-amp-default {
-		pins = "gpio3";
+		pins = "gpio1, gpio3";
 		function = "gpio";
 
 		drive-strength = <2>;

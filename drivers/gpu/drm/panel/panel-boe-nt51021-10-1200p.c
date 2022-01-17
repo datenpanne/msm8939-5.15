@@ -596,6 +596,14 @@ static int boe_panel_get_modes(struct drm_panel *panel,
 	return 1;
 }
 
+static const struct drm_panel_funcs boe_panel_funcs = {
+	.unprepare = boe_panel_unprepare,
+	.prepare = boe_panel_prepare,
+	.enable = boe_panel_enable,
+	.get_modes = boe_panel_get_modes,
+};
+
+
 static int boe_panel_bl_update_status(struct backlight_device *bl)
 {
 	struct mipi_dsi_device *dsi = bl_get_data(bl);
@@ -652,13 +660,6 @@ boe_create_backlight(struct mipi_dsi_device *dsi, struct boe_panel *boe)
 					      &boe_bl_ops, &props);
 }
 
-static const struct drm_panel_funcs boe_panel_funcs = {
-	.unprepare = boe_panel_unprepare,
-	.prepare = boe_panel_prepare,
-	.enable = boe_panel_enable,
-	.get_modes = boe_panel_get_modes,
-};
-
 static int boe_panel_add(struct boe_panel *boe)
 {
 	struct device *dev = &boe->dsi->dev;
@@ -696,6 +697,11 @@ static int boe_panel_add(struct boe_panel *boe)
 		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
 		return err;
 	}
+
+	boe->panel.backlight = boe_create_backlight(dsi);
+	if (IS_ERR(boe->panel.backlight))
+		return dev_err_probe(dev, PTR_ERR(boe->panel.backlight),
+				     "Failed to create backlight\n");
 
 	err = drm_panel_of_backlight(&boe->base);
 	if (err)
