@@ -792,7 +792,7 @@
 	};*/
 
 	speaker_amp_default: speaker-amp-default {
-		pins = "gpio1;
+		pins = "gpio1", "gpio3";
 		function = "gpio";
 
 		drive-strength = <2>;
