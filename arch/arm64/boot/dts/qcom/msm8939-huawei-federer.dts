@@ -191,16 +191,16 @@
 		pinctrl-0 = <&lcd_iovcc_default>;
 	};
 
-	reg_lcd_vcc: vcc {
+	reg_lcd_vled: vled {
 		compatible = "regulator-fixed";
-		regulator-name = "vcc";
+		regulator-name = "vled";
 		vin-supply = <&reg_lcd_neg>;		
 		gpio = <&msmgpio 32 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		//regulator-always-on;
 		regulator-boot-on;
 		pinctrl-names = "default";
-		pinctrl-0 = <&lcd_vcc_default>;
+		pinctrl-0 = <&lcd_vled_default>;
 	};
 
 	reg_lcd_pos: regulator-lcd-pos {
@@ -221,26 +221,34 @@
 		regulator-boot-on;
 	};
 
+	reg_speaker_boost: regulator-speaker-boost {
+		compatible = "regulator-fixed";
+		regulator-name = "speaker-boost";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+
+		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&speaker_boost_default>;
+	};
+
 	speaker_amp: audio-amplifier {
 		compatible = "simple-audio-amplifier";
         VCC-supply = <&reg_speaker_boost>;
 		enable-gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
 		sound-name-prefix = "Speaker Amp";
 
-		gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
 		pinctrl-names = "default";
 		pinctrl-0 = <&speaker_amp_default>;
-
 	};
 
 	headphones_switch: audio-switch {
 		compatible = "simple-audio-amplifier";
+		enable-gpios = <&msmgpio 0 GPIO_ACTIVE_HIGH>;
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&headphones_switch_default>;
-
-		enable-gpios = <&msmgpio 0 GPIO_ACTIVE_HIGH>;
 		sound-name-prefix = "Headphones Switch";
 	};
 
@@ -249,18 +257,6 @@
 		id-gpio = <&msmgpio 117 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&usb_id_default>;
-	};
-
-	reg_speaker_boost: regulator-speaker-boost {
-		compatible = "regulator-fixed";
-		regulator-name = "ext-pa-boost";
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-
-		gpios = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-		pinctrl-names = "default";
-		pinctrl-0 = <&speaker_boost_default>;
 	};
 };
 
@@ -430,7 +426,7 @@
 		compatible = "boe,nt51021-10-1200p";
 		reg = <0>;
 
-		vcc-supply = <&reg_lcd_vcc>;
+		vled-supply = <&reg_lcd_vled>;
 		iovcc-supply = <&reg_lcd_iovcc>;
 		//pp1800-supply = <&pp1800_lcd>;
 
@@ -751,7 +747,7 @@
 		output-low;
 	};
 
-	lcd_vcc_default: lcd-vcc-default {
+	lcd_vled_default: lcd-vled-default {
 		pins = "gpio32";
 		function = "gpio";
 
@@ -808,7 +804,6 @@
 		drive-strength = <2>;
 		bias-disable;
 	};
-
 
 	usb_id_default: usb-id-default {
 		pins = "gpio117";

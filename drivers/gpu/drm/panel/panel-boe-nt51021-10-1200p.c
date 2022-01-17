@@ -48,7 +48,7 @@ struct boe_panel {
 
 	enum drm_panel_orientation orientation;
 	//struct regulator *pp1800;
-	struct regulator *vcc;
+	struct regulator *vled;
 	struct regulator *iovcc;
 	struct gpio_desc *reset_gpio;
 	struct gpio_desc *backlight_gpio;
@@ -451,7 +451,7 @@ static int boe_panel_unprepare(struct drm_panel *panel)
 	msleep(150);
 
 	if (boe->desc->discharge_on_disable) {
-		regulator_disable(boe->vcc);
+		regulator_disable(boe->vled);
 		regulator_disable(boe->iovcc);
 		usleep_range(5000, 7000);
 		gpiod_set_value(boe->reset_gpio, 0);
@@ -460,7 +460,7 @@ static int boe_panel_unprepare(struct drm_panel *panel)
 	} else {
 		gpiod_set_value(boe->reset_gpio, 0);
 		usleep_range(500, 1000);
-		regulator_disable(boe->vcc);
+		regulator_disable(boe->vled);
 		regulator_disable(boe->iovcc);
 		usleep_range(5000, 7000);
 		gpiod_set_value(boe->backlight_gpio, 0);
@@ -489,7 +489,7 @@ static int boe_panel_prepare(struct drm_panel *panel)
 	ret = regulator_enable(boe->iovcc);
 	if (ret < 0)
 		gpiod_set_value(boe->backlight_gpio, 0);
-	ret = regulator_enable(boe->vcc);
+	ret = regulator_enable(boe->vled);
 	if (ret < 0)
 		goto poweroffiovcc;
 
@@ -513,7 +513,7 @@ static int boe_panel_prepare(struct drm_panel *panel)
 	return 0;
 
 poweroff:
-	regulator_disable(boe->vcc);
+	regulator_disable(boe->vled);
 poweroffiovcc:
 	regulator_disable(boe->iovcc);
 	usleep_range(5000, 7000);
@@ -660,9 +660,9 @@ static int boe_panel_add(struct boe_panel *boe)
 	if (IS_ERR(boe->iovcc))
 		return PTR_ERR(boe->iovcc);
 
-	boe->vcc = devm_regulator_get(dev, "vcc");
-	if (IS_ERR(boe->vcc))
-		return PTR_ERR(boe->vcc);
+	boe->vled = devm_regulator_get(dev, "vled");
+	if (IS_ERR(boe->vled))
+		return PTR_ERR(boe->vled);
 
 	boe->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
 	if (IS_ERR(boe->reset_gpio)) {
