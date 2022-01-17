@@ -475,7 +475,7 @@ static int boe_panel_unprepare(struct drm_panel *panel)
 static int boe_panel_prepare(struct drm_panel *panel)
 {
 	struct boe_panel *boe = to_boe_panel(panel);
-	struct mipi_dsi_device *dsi = boe->dsi;
+	//struct mipi_dsi_device *dsi = boe->dsi;
 	int ret;
 
 	if (boe->prepared)
@@ -639,7 +639,7 @@ static const struct backlight_ops boe_bl_ops = {
 };
 
 static struct backlight_device *
-boe_create_backlight(struct mipi_dsi_device *dsi)
+boe_create_backlight(struct mipi_dsi_device *dsi, struct boe_panel *boe)
 {
 	struct device *dev = &boe->dsi->dev;
 	const struct backlight_properties props = {
