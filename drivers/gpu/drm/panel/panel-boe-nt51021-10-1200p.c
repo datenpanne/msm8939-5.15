@@ -663,6 +663,7 @@ boe_create_backlight(struct mipi_dsi_device *dsi, struct boe_panel *boe)
 static int boe_panel_add(struct boe_panel *boe)
 {
 	struct device *dev = &boe->dsi->dev;
+	struct mipi_dsi_device *dsi = boe->dsi;
 	int err;
 
 	boe->iovcc = devm_regulator_get(dev, "iovcc");
@@ -698,9 +699,9 @@ static int boe_panel_add(struct boe_panel *boe)
 		return err;
 	}
 
-	boe->panel.backlight = boe_create_backlight(dsi);
-	if (IS_ERR(boe->panel.backlight))
-		return dev_err_probe(dev, PTR_ERR(boe->panel.backlight),
+	boe->backlight = boe_create_backlight(dsi);
+	if (IS_ERR(boe->backlight))
+		return dev_err_probe(dev, PTR_ERR(boe->backlight),
 				     "Failed to create backlight\n");
 
 	err = drm_panel_of_backlight(&boe->base);
