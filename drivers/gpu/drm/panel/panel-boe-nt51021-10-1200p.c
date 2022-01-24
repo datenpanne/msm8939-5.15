@@ -566,7 +566,6 @@ static const struct panel_desc boe_nt51021_10_desc = {
 			MIPI_DSI_MODE_NO_EOT_PACKET |
             MIPI_DSI_MODE_LPM,
 			//MIPI_DSI_CLOCK_NON_CONTINUOUS | #pixels & stripes
-			//MIPI_DSI_MODE_LPM, # won't wake up from deep sleep <--Test
 	.init_cmds = boe_init_cmd,
 	.discharge_on_disable = true,
 };
@@ -603,7 +602,6 @@ static const struct drm_panel_funcs boe_panel_funcs = {
 	.enable = boe_panel_enable,
 	.get_modes = boe_panel_get_modes,
 };
-
 
 static int boe_panel_bl_update_status(struct backlight_device *bl)
 {
@@ -648,9 +646,9 @@ static const struct backlight_ops boe_bl_ops = {
 };
 
 static struct backlight_device *
-boe_create_backlight(struct mipi_dsi_device *dsi, struct boe_panel *boe)
+boe_create_backlight(struct mipi_dsi_device *dsi)
 {
-	struct device *dev = &boe->dsi->dev;
+	struct device *dev = &dsi->dev;
 	const struct backlight_properties props = {
 		.type = BACKLIGHT_RAW,
 		.brightness = 255,
