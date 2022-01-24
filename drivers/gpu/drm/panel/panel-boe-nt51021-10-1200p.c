@@ -563,6 +563,7 @@ static const struct panel_desc boe_nt51021_10_desc = {
 			MIPI_DSI_MODE_VIDEO_BURST |
 			//MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
 			MIPI_DSI_MODE_VIDEO_HSE |
+			MIPI_DSI_MODE_NO_EOT_PACKET |
             MIPI_DSI_MODE_LPM,
 			//MIPI_DSI_CLOCK_NON_CONTINUOUS | #pixels & stripes
 			//MIPI_DSI_MODE_LPM, # won't wake up from deep sleep <--Test
@@ -699,9 +700,9 @@ static int boe_panel_add(struct boe_panel *boe)
 		return err;
 	}
 
-	boe->backlight = boe_create_backlight(dsi);
-	if (IS_ERR(boe->backlight))
-		return dev_err_probe(dev, PTR_ERR(boe->backlight),
+	boe->base.backlight = boe_create_backlight(dsi);
+	if (IS_ERR(boe->base.backlight))
+		return dev_err_probe(dev, PTR_ERR(boe->base.backlight),
 				     "Failed to create backlight\n");
 
 	err = drm_panel_of_backlight(&boe->base);
