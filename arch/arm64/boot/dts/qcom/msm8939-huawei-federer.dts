@@ -233,18 +233,6 @@
 		pinctrl-0 = <&speaker_amp_default>;
 	};
 
-	reg_speaker_boost: regulator-speaker-boost {
-		compatible = "regulator-fixed";
-		regulator-name = "boost";
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-
-		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-		pinctrl-names = "default";
-		pinctrl-0 = <&speaker_boost_default>;
-	};
-
 	headphones_switch: audio-switch {
 		compatible = "simple-audio-amplifier";
 		enable-gpios = <&msmgpio 0 GPIO_ACTIVE_HIGH>;
@@ -259,6 +247,18 @@
 		id-gpio = <&msmgpio 117 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&usb_id_default>;
+	};
+
+	reg_speaker_boost: regulator-speaker-boost {
+		compatible = "regulator-fixed";
+		regulator-name = "speaker_boost";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+
+		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&speaker_boost_default>;
 	};
 };
 
