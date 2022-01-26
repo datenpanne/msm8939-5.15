@@ -29,10 +29,10 @@
 	};
 
 	reserved-memory {
-		/*/delete-node/ venus@90000000;
+		/delete-node/ venus@90000000;
 		/delete-node/ rmtfs@86681000;
 		/delete-node/ rfsa@867e0000;
-		/delete-node/ mba@8ea00000;*/
+		/delete-node/ mba@8ea00000;
 
 		cont_splash_mem: framebuffer@83000000 {
 			compatible = "removed-dma-pool";
@@ -45,12 +45,12 @@
 			no-map;
 		};
 
-		/*rmtfs@86700000 {
+		rmtfs@86700000 {
 			compatible = "qcom,rmtfs-mem";
 			reg = <0x0 0x86700000 0x0 0x100000>;
 			no-map;
 			qcom,client-id = <1>;
-		};*/
+		};
 
 		gps_mem: gps@8c400000 {
 			status = "disabled";
@@ -72,20 +72,20 @@
 			ftrace-size = <0>;
 		};
 
-		/*venus_mem: venus@8f800000 {
+		venus_mem: venus@8f800000 {
 			reg = <0x0 0x8f800000 0x0 0x800000>;
 			no-map;
-		};*/
+		};
 
 		reserved@f7800000 {
 			reg = <0x0 0xf7800000 0x0 0x8400000>;
 			no-map;
 		};
 
-		/*mba_mem: mba@ffc00000 {
-			no-map;
+		mba_mem: mba@ffc00000 {
 			reg = <0 0xffc00000 0 0x400000>;
-		};*/
+			no-map;
+		};
 	};
 
 	bat: battery {
@@ -257,6 +257,7 @@
 
 		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
+		regulator-boot-on;
 		pinctrl-names = "default";
 		pinctrl-0 = <&speaker_boost_default>;
 	};
@@ -362,7 +363,7 @@
 		pinctrl-0 = <&charger_irq_default &chg_ctl_default>; // &otg_en>;
 		ti,system-minimum-microvolt = <3200000>;
 		monitored-battery = <&bat>;
-		omit-battery-class;
+		//omit-battery-class;
 
 		usb_otg_vbus: usb-otg-vbus { };
 	};
@@ -419,9 +420,9 @@
 };
 
 &dsi0 {
-	pinctrl-names = "default", "sleep";
+	/*pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&mdss_default>;
-	pinctrl-1 = <&mdss_sleep>;
+	pinctrl-1 = <&mdss_sleep>;*/
 
 	panel@0 {
 		status = "okay";
@@ -757,7 +758,7 @@
 		output-low;
 	};
 
-	mdss {
+	/*mdss {
 		mdss_default: mdss-default {
 			pins = "gpio25";
 			function = "gpio";
@@ -772,7 +773,7 @@
 			drive-strength = <2>;
 			bias-pull-down;
 		};
-	};
+	};*/
 
 	/*bq {
 		bq_irq_default: bq-irq-default {
