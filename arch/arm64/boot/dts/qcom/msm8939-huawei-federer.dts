@@ -168,17 +168,6 @@
 		};
 	};
 
-	/*pp1800_lcd: pp1800-lcd {
-		compatible = "regulator-fixed";
-		regulator-name = "pp1800_lcd";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pp1800_lcd_en>;
-
-		enable-active-high;
-		regulator-always-on;
-		gpio = <&msmgpio 109 GPIO_ACTIVE_HIGH>;
-	};*/
-
 	reg_lcd_iovcc: iovcc {
 		compatible = "regulator-fixed";
 		regulator-name = "iovcc";
@@ -229,6 +218,7 @@
 
 		gpio = <&msmgpio 1 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
+        startup-delay-us = <100>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&speaker_amp_default>;
 	};
@@ -249,7 +239,7 @@
 		pinctrl-0 = <&usb_id_default>;
 	};
 
-	reg_speaker_boost: regulator-speaker-boost {
+	speaker_boost: speaker-boost {
 		compatible = "regulator-fixed";
 		regulator-name = "speaker_boost";
 		regulator-min-microvolt = <5000000>;
@@ -257,9 +247,8 @@
 
 		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
-		regulator-boot-on;
 		pinctrl-names = "default";
-		pinctrl-0 = <&speaker_boost_default>;
+		pinctrl-0 = <&speaker_boost_en_default>;
 	};
 };
 
@@ -363,7 +352,7 @@
 		pinctrl-0 = <&charger_irq_default &chg_ctl_default>; // &otg_en>;
 		ti,system-minimum-microvolt = <3200000>;
 		monitored-battery = <&bat>;
-		//omit-battery-class;
+		omit-battery-class;
 
 		usb_otg_vbus: usb-otg-vbus { };
 	};
@@ -800,7 +789,7 @@
 		bias-disable;
 	};
 
-	speaker_boost_default: speaker-boost-default {
+	speaker_boost_en_default: speaker-boost-en-default {
 		pins = "gpio2";
 		function = "gpio";
 
