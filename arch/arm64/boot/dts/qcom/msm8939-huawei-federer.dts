@@ -213,11 +213,11 @@
 	speaker_amp: audio-amplifier {
 		compatible = "simple-audio-amplifier";
         //VCC-supply = <&speaker_boost>;
-		enable-gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
+		enable-gpios = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
 		sound-name-prefix = "Speaker Amp";
 
-		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
+		//gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
+		//enable-active-high;
         //startup-delay-us = <100>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&speaker_amp_default>;
@@ -774,7 +774,7 @@
 	};*/
 
 	speaker_amp_default: speaker-amp-default {
-		pins = "gpio2", "gpio3";
+		pins = "gpio2";
 		function = "gpio";
 
 		drive-strength = <2>;
