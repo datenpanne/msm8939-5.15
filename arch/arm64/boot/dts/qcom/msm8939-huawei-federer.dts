@@ -210,15 +210,24 @@
 		regulator-boot-on;
 	};
 
+	reg_vcc5v0: vcc5v0 {
+		compatible = "regulator-fixed";
+		regulator-name = "vcc5v0";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+	};
+
 	speaker_amp: audio-amplifier {
 		compatible = "simple-audio-amplifier";
-        //VCC-supply = <&speaker_boost>;
-		enable-gpios = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
+        VCC-supply = <&reg_vcc5v0>;
+		enable-gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
 		sound-name-prefix = "Speaker Amp";
 
-		//gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
-		//enable-active-high;
-        //startup-delay-us = <100>;
+		gpio = <&msmgpio 1 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+        startup-delay-us = <100>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&speaker_amp_default>;
 	};
@@ -774,7 +783,7 @@
 	};*/
 
 	speaker_amp_default: speaker-amp-default {
-		pins = "gpio2";
+		pins = "gpio1";
 		function = "gpio";
 
 		drive-strength = <2>;
