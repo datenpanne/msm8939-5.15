@@ -215,8 +215,11 @@
 		regulator-name = "vcc5v0";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
+
 		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&vcc5v0_en_default>;
 	};
 
 	speaker_amp: audio-amplifier {
@@ -227,6 +230,7 @@
 
 		gpio = <&msmgpio 1 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
+        VCC-supply = <&reg_vcc5v0>;
         startup-delay-us = <100>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&speaker_amp_default>;
@@ -790,13 +794,13 @@
 		bias-disable;
 	};
 
-	/*speaker_boost_en_default: speaker-boost-en-default {
+	vcc5v0_en_default: vcc5v0-en-default {
 		pins = "gpio2";
 		function = "gpio";
 
 		drive-strength = <2>;
 		bias-disable;
-	};*/
+	};
 
 	usb_id_default: usb-id-default {
 		pins = "gpio117";
