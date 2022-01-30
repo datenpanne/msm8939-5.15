@@ -225,11 +225,11 @@
 
 	speaker_amp: audio-amplifier {
 		compatible = "simple-audio-amplifier";
-        VCC-supply = <&speaker_boost>;
+        VCC-supply = <&pm8916_l17>;
 		enable-gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
 		sound-name-prefix = "Speaker Amp";
 
-		gpio = <&msmgpio 1 GPIO_ACTIVE_HIGH>;
+		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
         startup-delay-us = <100>;
 		pinctrl-names = "default";
@@ -252,16 +252,16 @@
 		pinctrl-0 = <&usb_id_default>;
 	};
 
-	speaker_boost: speaker-boost {
+	/*speaker_boost: speaker-boost {
 		compatible = "regulator-fixed";
 		regulator-name = "speaker_boost";
-		vin-supply = <&reg_vcc5v0>;
+		vin-supply = <&pm8916_l17>;
 
 		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		pinctrl-names = "default";
 		pinctrl-0 = <&speaker_boost_default>;
-	};
+	};*/
 };
 
 &blsp_dma {
@@ -786,20 +786,20 @@
 	};*/
 
 	speaker_amp_default: speaker-amp-default {
-		pins = "gpio1";
+		pins = "gpio3", "gpio2";
 		function = "gpio";
 
 		drive-strength = <2>;
 		bias-disable;
 	};
 
-	speaker_boost_default: speaker-boost-default {
+	/*speaker_boost_default: speaker-boost-default {
 		pins = "gpio2";
 		function = "gpio";
 
 		drive-strength = <2>;
 		bias-disable;
-	};
+	};*/
 
 	usb_id_default: usb-id-default {
 		pins = "gpio117";
