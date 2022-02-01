@@ -11,7 +11,7 @@
 
 / {
 	model = "Huawei MediaPad T2 Pro 10";
-	compatible = "huawei,federer", "qcom,msm8939", "qcom,msm8939-qrd-skuk", "qcom,qrd";
+	compatible = "huawei,federer", "qcom,msm8939";
 	chassis-type = "tablet";
 	qcom,msm-id = <239 0>;
 	qcom,board-id =	<8000 0>, <8000 4>,
@@ -36,7 +36,7 @@
 
 		cont_splash_mem: framebuffer@83000000 {
 			compatible = "removed-dma-pool";
-			reg = <0x0 0x83000000 0x0 0x2000000>;
+			reg = <0x0 0x83000000 0x0 0x1400000>;
 			no-map;
 		};
 
@@ -45,9 +45,9 @@
 			no-map;
 		};
 
-		rmtfs@86700000 {
+		rmtfs@86690000 {
 			compatible = "qcom,rmtfs-mem";
-			reg = <0x0 0x86700000 0x0 0x100000>;
+			reg = <0x0 0x86690000 0x0 0x100000>;
 			no-map;
 			qcom,client-id = <1>;
 		};
@@ -210,18 +210,18 @@
 		regulator-boot-on;
 	};
 
-	reg_vcc5v0: vcc5v0 {
+	/*reg_vcc5v0: vcc5v0 {
 		compatible = "regulator-fixed";
 		regulator-name = "vcc5v0";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		regulator-always-on;
 
-		/*gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
+		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		pinctrl-names = "default";
-		pinctrl-0 = <&vcc5v0_en_default>;*/
-	};
+		pinctrl-0 = <&vcc5v0_en_default>;
+	};*/
 
 	speaker_amp: audio-amplifier {
 		compatible = "simple-audio-amplifier";
@@ -787,7 +787,7 @@
 	};*/
 
 	speaker_amp_default: speaker-amp-default {
-		pins = "gpio3", "gpio1";
+		pins = "gpio3";
 		function = "gpio";
 
 		drive-strength = <2>;
