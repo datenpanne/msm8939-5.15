@@ -36,7 +36,7 @@
 
 		cont_splash_mem: framebuffer@83000000 {
 			compatible = "removed-dma-pool";
-			reg = <0x0 0x83000000 0x0 0x1400000>;
+			reg = <0x0 0x83000000 0x0 0x2000000>;
 			no-map;
 		};
 
@@ -284,7 +284,7 @@
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&accel_irq_default>;
-		
+
 		mount-matrix =  "-1", "0", "0",
 				"0", "-1", "0",
 				"0", "0", "1";
@@ -404,7 +404,6 @@
 };
 
 &blsp_i2c5 {
-	clock-frequency = <400000>;
 	status = "okay";
 
 	touchscreen@1a {
@@ -427,7 +426,6 @@
 	pinctrl-1 = <&mdss_sleep>;*/
 
 	panel@0 {
-		status = "okay";
 		compatible = "boe,nt51021-10-1200p";
 		reg = <0>;
 
