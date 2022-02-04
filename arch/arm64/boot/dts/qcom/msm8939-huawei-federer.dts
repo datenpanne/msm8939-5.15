@@ -236,18 +236,28 @@
 		pinctrl-0 = <&spk_ext_pa_boost_default>;
 	};
 
-	speaker_amp: audio-amplifier {
+	speaker_amp_left: audio-amplifier-left {
 		compatible = "simple-audio-amplifier";
         VCC-supply = <&reg_spk_ext_pa_boost>;
 		enable-gpios = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
-		sound-name-prefix = "Speaker Amp";
+		sound-name-prefix = "Speaker Amp L";
 
-		gpio = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
         startup-delay-us = <100>;
 
 		pinctrl-names = "default";
-		pinctrl-0 = <&speaker_amp_default>;
+		pinctrl-0 = <&speaker_amp_left_default>;
+	};
+
+	speaker_amp_right: audio-amplifier-right {
+		compatible = "simple-audio-amplifier";
+        VCC-supply = <&reg_spk_ext_pa_boost>;
+		enable-gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
+		sound-name-prefix = "Speaker Amp R";
+
+        startup-delay-us = <100>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&speaker_amp_right_default>;
 	};
 
 	headphones_switch: audio-switch {
@@ -520,14 +530,14 @@
 
 	model = "oppo-a51f";
 	audio-routing =
-		"Speaker Amp INL", "HPH_L_EXT",
-		"Speaker Amp INR", "HPH_R_EXT",
+		"Speaker Amp L IN", "HPH_L_EXT",
+		"Speaker Amp R IN", "HPH_R_EXT",
 		"Headphones Switch INL", "HPH_L",
 		"Headphones Switch INR", "HPH_R",
 		"AMIC1", "MIC BIAS External1",
 		"AMIC2", "MIC BIAS External2",
 		"AMIC3", "MIC BIAS External1";
-	aux-devs = <&speaker_amp>, <&headphones_switch>;
+	aux-devs = <&speaker_amp_left>, <&speaker_amp_right>, <&headphones_switch>;
 
 	dai-link-primary {
 		link-name = "Primary MI2S";
@@ -785,8 +795,16 @@
 		};
 	};*/
 
-	speaker_amp_default: speaker-amp-default {
-		pins = "gpio2","gpio3";
+	speaker_amp_left_default: speaker-amp-left-default {
+		pins = "gpio2";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	speaker_amp_right_default: speaker-amp-right-default {
+		pins = "gpio3";
 		function = "gpio";
 
 		drive-strength = <2>;
