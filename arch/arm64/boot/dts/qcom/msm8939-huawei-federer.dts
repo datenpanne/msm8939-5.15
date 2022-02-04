@@ -229,7 +229,7 @@
 		enable-gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
 		sound-name-prefix = "Speaker Amp";
 
-		gpio = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
+		gpio = <&msmgpio 1 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
         startup-delay-us = <100>;
 		pinctrl-names = "default";
@@ -421,9 +421,9 @@
 };
 
 &dsi0 {
-	/*pinctrl-names = "default", "sleep";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&mdss_default>;
-	pinctrl-1 = <&mdss_sleep>;*/
+	pinctrl-1 = <&mdss_sleep>;
 
 	panel@0 {
 		compatible = "boe,nt51021-10-1200p";
@@ -431,7 +431,6 @@
 
 		vled-supply = <&reg_lcd_vled>;
 		iovcc-supply = <&reg_lcd_iovcc>;
-		//pp1800-supply = <&pp1800_lcd>;
 
 		reset-gpios = <&msmgpio 25 GPIO_ACTIVE_LOW>;
 		backlight-gpios = <&msmgpio 109 GPIO_ACTIVE_HIGH>;
@@ -750,7 +749,7 @@
 		output-low;
 	};
 
-	/*mdss {
+	mdss {
 		mdss_default: mdss-default {
 			pins = "gpio25";
 			function = "gpio";
@@ -765,7 +764,7 @@
 			drive-strength = <2>;
 			bias-pull-down;
 		};
-	};*/
+	};
 
 	/*bq {
 		bq_irq_default: bq-irq-default {
@@ -785,7 +784,7 @@
 	};*/
 
 	speaker_amp_default: speaker-amp-default {
-		pins = "gpio3";
+		pins = "gpio3","gpio1";
 		function = "gpio";
 
 		drive-strength = <2>;
