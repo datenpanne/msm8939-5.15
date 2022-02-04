@@ -223,10 +223,23 @@
 		pinctrl-0 = <&vcc5v0_en_default>;
 	};*/
 
+	reg_spk_ext_pa_boost: spk-ext-pa-boost {
+		compatible = "regulator-fixed";
+		regulator-name = "spk_ext_pa_boost";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+        regulator-always-on;
+
+		/*gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&spk_ext_pa_boost_default>;*/
+	};
+
 	speaker_amp: audio-amplifier {
 		compatible = "simple-audio-amplifier";
         VCC-supply = <&reg_spk_ext_pa_boost>;
-		enable-gpios = <&msmgpio 3 GPIO_ACTIVE_HIGH>;
+		enable-gpios = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
 		sound-name-prefix = "Speaker Amp";
 
 		gpio = <&msmgpio 1 GPIO_ACTIVE_HIGH>;
@@ -250,18 +263,6 @@
 		id-gpio = <&msmgpio 117 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&usb_id_default>;
-	};
-
-	reg_spk_ext_pa_boost: spk-ext-pa-boost {
-		compatible = "regulator-fixed";
-		regulator-name = "spk_ext_pa_boost";
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-
-		gpio = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-		pinctrl-names = "default";
-		pinctrl-0 = <&spk_ext_pa_boost_default>;
 	};
 };
 
@@ -784,20 +785,20 @@
 	};*/
 
 	speaker_amp_default: speaker-amp-default {
-		pins = "gpio3","gpio1";
+		pins = "gpio2","gpio1";
 		function = "gpio";
 
 		drive-strength = <2>;
 		bias-disable;
 	};
 
-	spk_ext_pa_boost_default: spk-ext-pa-boost-default {
+	/*spk_ext_pa_boost_default: spk-ext-pa-boost-default {
 		pins = "gpio2";
 		function = "gpio";
 
 		drive-strength = <2>;
 		bias-disable;
-	};
+	};*/
 
 	usb_id_default: usb-id-default {
 		pins = "gpio117";
