@@ -432,6 +432,10 @@
 	status = "okay";
 };
 
+&cpr {
+	vdd-apc-supply = <&ncp6335d>;
+};
+
 &dsi0 {
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&mdss_default>;
